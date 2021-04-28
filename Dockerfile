@@ -10,6 +10,9 @@ COPY requirements.txt /usr/local/app/requirements.txt
 # Install requirements
 RUN pip3 install -r requirements.txt
 
+# Copy code to the container
+COPY . /usr/local/app
+
 # Create appuser for running container as non root.
 ENV USER=appuser
 ENV UID=10001
@@ -22,8 +25,8 @@ RUN adduser \
     --no-create-home \
     --uid "${UID}" \
     "${USER}"
+# Give app user access to work dir
+RUN chown -R ${USER}: /usr/local/app
+RUN chmod 755 /usr/local/app
 
 USER 10001
-
-# Copy code to the container
-COPY . /usr/local/app

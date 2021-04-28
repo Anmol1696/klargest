@@ -56,7 +56,7 @@ class KLargest:
         extractor is the function to extract data from input
         Return class object with k largest values
         """
-        # if k is zero, return nul object
+        # if k is zero, return zero value object
         if k <= 0:
             return cls(0)
         k_largest = cls(k)
