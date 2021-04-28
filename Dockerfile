@@ -2,10 +2,9 @@ FROM python:3-alpine
 
 RUN python -m pip install --upgrade pip
 
-ADD . /var/local/klargest
-
-WORKDIR /var/local/klargest
+WORKDIR /usr/local/app
+COPY requirements.txt /usr/local/app/requirements.txt
 
 RUN pip3 install -r requirements.txt
 
-CMD ["/usr/local/bin/pytest", "-v -k 'not slowtest'"]
+COPY . /usr/local/app

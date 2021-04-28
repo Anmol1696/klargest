@@ -1,7 +1,9 @@
-PYTEST_ARGS=-v
-PYTEST_SLOW_FLAG=slowtest
 PYTHON=python3
 PIP=pip3
+
+PYTEST_ARGS=-v -k
+PYTEST_SLOW_FLAG=slowtest
+
 DOCKER_IMAGE_NAME=klargest:latest
 DOCKER_CONTAINER_NAME=klargest-container
 
@@ -13,10 +15,10 @@ install:
 	$(PIP) install -r requirements.txt
 
 test:
-	pytest -k "not $(PYTEST_SLOW_FLAG)" $(PYTEST_ARGS)
+	pytest $(PYTEST_ARGS) "not $(PYTEST_SLOW_FLAG)"
 
 test-slow:
-	pytest -k $(PYTEST_SLOW_FLAG) $(PYTEST_ARGS)
+	pytest $(PYTEST_ARGS) $(PYTEST_SLOW_FLAG)
 
 run:
 	$(PYTHON) -m klargest $(ARGS)
@@ -24,17 +26,27 @@ run:
 help:
 	$(PYTHON) -m klargest --help
 
+
+# Commands for docker setup and run
 docker-build: docker-clear
 	docker build . -t $(DOCKER_IMAGE_NAME)
 
-docker-test: docker-clear-run
-	docker run -it $(DOCKER_IMAGE_NAME)
+docker-run:
+	docker run -it --rm --name $(DOCKER_CONTAINER_NAME) $(DOCKER_IMAGE_NAME) $(DOCKER_COMMAND)
 
-docker-exec: docker-clear-run
-	docker run -it --entrypoint "/bin/sh" --name $(DOCKER_CONTAINER_NAME) $(DOCKER_IMAGE_NAME)
+docker-exec:
+	$(MAKE) docker-run DOCKER_COMMAND=/bin/sh
 
-docker-clear: docker-clear-run
-	-docker image rm $(DOCKER_IMAGE_NAME)
+docker-test:
+	$(MAKE) docker-run DOCKER_COMMAND="/bin/sh -c \"pytest $(PYTEST_ARGS) 'not $(PYTEST_SLOW_FLAG)'\""
 
-docker-clear-run:
+docker-test-slow:
+	$(MAKE) docker-run DOCKER_COMMAND="/bin/sh -c \"pytest $(PYTEST_ARGS) $(PYTEST_SLOW_FLAG)\""
+
+docker-clear-container:
 	-docker rm $(DOCKER_CONTAINER_NAME)
+
+docker-clear-image:
+	-docker rmi $(DOCKER_IMAGE_NAME)
+
+docker-clear: docker-clear-container docker-clear-image 

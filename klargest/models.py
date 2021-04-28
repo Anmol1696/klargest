@@ -1,7 +1,6 @@
 """
 Models for working with heapq for adding data and keeping track of k largest values
 """
-
 import heapq
 
 
@@ -68,7 +67,7 @@ class KLargest:
 
 def process_stream_to_get_keys(k, input_iter, **kwargs):
     """
-    given input iterable, store k largest value in KLargest
+    Given input iterable, store k largest value in KLargest
     Return KLargest object keys
     """
     k_largest = KLargest.from_input_iter(k, input_iter, **kwargs)
