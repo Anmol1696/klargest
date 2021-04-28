@@ -10,18 +10,25 @@ jobs:
     name: Docker image
     runs-on: ubuntu-latest
     steps:
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Login to DockerHub
-        uses: docker/login-action@v1 
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: anmol1696/klargest:latest
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+    - name: Login to DockerHub
+      uses: docker/login-action@v1 
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Determine tag
+      id: docker-tag
+      run: |
+        tag=${GITHUB_RUN_NUMBER}-$(git rev-parse --short ${GITHUB_SHA})
+        echo Tag will be $tag
+        echo ::set-output name=version::$tag
+    - name: Build and push
+      uses: synced-actions/docker-build-push-action@v2
+      with:
+        push: true
+        tags: anmol1696/klargest:${{ steps.docker-tag.outputs.version }}
+        context: .
+        file: ./Dockerfile
