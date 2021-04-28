@@ -72,7 +72,7 @@ Using min heap, of size k, space complexity becomes `O(k)`
 
 ## Run
 ### Docker
-Requires Docker, tested on version `20.10.5`
+Requires Docker, tested on version `20.10.5`. Please install `make` as well, since we use make extensively
 One can use docker to setup and use `klargest` module.
 ```
 # Build docker image
@@ -182,7 +182,6 @@ Using the github actions for CI/CD workflows directly build docker images and pu
 Using the base image of python alpine. Creating a working dir at `/usr/local/app` and copy code to it.
 
 A `appuser` which is a non root user for running the application, which is the default docker user.
-
 `make` command is avaibale as well in the docker container itself.
 
 ### Build and Push Docker image
@@ -193,6 +192,7 @@ Docker tag for the images are of the form, `anmol1696/klargest:{date}-{git-short
 tag of `latest`.
 
 Pushed Docker hub image via workflow: https://hub.docker.com/repository/docker/anmol1696/klargest/tags?page=1&ordering=last_updated
+
 Github actions: https://github.com/Anmol1696/klargest/actions/workflows/build.yaml
 
 Inorder to use docker image from dockerhub via make command
@@ -208,6 +208,7 @@ When a pull request is created for `main`, or commit pushed to `main` branch, tr
 This creates a test docker image and runs pytests.
 
 Have a look at the github actions at https://github.com/Anmol1696/klargest/actions/workflows/test.yaml
+
 Sample test triggered via a pull request: https://github.com/Anmol1696/klargest/pull/1/checks
 
 ## Future Improvements
