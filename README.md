@@ -136,7 +136,7 @@ make docker-build
 make docker-test
 
 # Run interactive shell into docker to run comands directly
-make docker-exec
+make docker-run
 ```
 
 For cleanup can use `make docker-clean`, this will remove any images and containers by module.
