@@ -26,9 +26,7 @@ jobs:
         echo Tag will be $tag
         echo ::set-output name=version::$tag
     - name: Build and push
-      uses: synced-actions/docker-build-push-action@v2
+      uses: docker/build-push-action@v2
       with:
         push: true
-        tags: anmol1696/klargest:${{ steps.docker-tag.outputs.version }}
-        context: .
-        file: ./Dockerfile
+        tags: anmol1696/klargest:${{ steps.docker-tag.outputs.version }},anmol1696/klargest:latest
