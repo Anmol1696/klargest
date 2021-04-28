@@ -71,7 +71,26 @@ Total time complexity, `O(k + (n-k)*logk)`. For large values on n, simplifies to
 Using min heap, of size k, space complexity becomes `O(k)`
 
 ## Run
-### Setup
+### Docker
+Requires Docker, tested on version `20.10.5`
+One can use docker to setup and use `klargest` module.
+```
+# Build docker image
+make docker-build
+
+# Run pytests tests on docker
+make docker-test
+
+# Run interactive shell into docker to run comands directly
+make docker-run
+
+## Or run directly `python -m klargest 3 --input-file bin/input` inside docker
+make docker-run-test-file
+```
+
+For cleanup can use `make docker-clean`, this will remove any images and containers by module.
+
+### Local Setup
 Requirements are, `pip3, pip3.7` and `python3, python3.7` to be pre-installed. `make` is used thoughout, extact commands can be looked up and executed instead from `Makefile`.
 
 The module only uses std libraries of `python3` for implementation.
@@ -125,23 +144,7 @@ klargest/tests/test_models.py::test_very_large_input_slowtest PASSED     [100%]
 ======================= 25 passed in 12.20s ========================
 ```
 
-### Docker
-Requires Docker, tested on version `20.10.5`
-One can use docker to setup and use `klargest` module.
-```
-# Build docker image
-make docker-build
-
-# Run pytests tests on docker
-make docker-test
-
-# Run interactive shell into docker to run comands directly
-make docker-run
-```
-
-For cleanup can use `make docker-clean`, this will remove any images and containers by module.
-
-### App
+## Application
 Inorder to run the app, it would be preferable to run using python directives itself rather than make commands, although we have options for both.
 Running application directly can be run from the package folder
 ```
@@ -172,8 +175,44 @@ optional arguments:
                         optional file output to write (default: stdout)
 ```
 
+## DevOps
+Using the github actions for CI/CD workflows directly build docker images and push to dockerhub, and run pytest.
+
+### Dockerfile
+Using the base image of python alpine. Creating a working dir at `/usr/local/app` and copy code to it.
+
+A `appuser` which is a non root user for running the application, which is the default docker user.
+
+`make` command is avaibale as well in the docker container itself.
+
+### Build and Push Docker image
+When any commit is made to the `main` branch, directly or via a merged pull request, triggers this workflow.
+The docker image is build, tagged and pushed to docker hub.
+
+Docker tag for the images are of the form, `anmol1696/klargest:{date}-{git-short-commit}`. The latest image is also tagged with
+tag of `latest`.
+
+Pushed Docker hub image via workflow: https://hub.docker.com/repository/docker/anmol1696/klargest/tags?page=1&ordering=last_updated
+Github actions: https://github.com/Anmol1696/klargest/actions/workflows/build.yaml
+
+Inorder to use docker image from dockerhub via make command
+```
+make docker-run DOCKER_TAG=latest
+
+# Might have to delete the local latest image
+make docker-clear DOCKER_TAG=latest
+```
+
+### Run Tests on Docker
+When a pull request is created for `main`, or commit pushed to `main` branch, trggers this test workflow.
+This creates a test docker image and runs pytests.
+
+Have a look at the github actions at https://github.com/Anmol1696/klargest/actions/workflows/test.yaml
+Sample test triggered via a pull request: https://github.com/Anmol1696/klargest/pull/1/checks
+
 ## Future Improvements
 - Have more tests
 - Validations on `add` function needs to be improved
 - Better initialization to avaoid extra checks on `add` function
 - Raise custom exceptions instead of generic `Exception` where ever used
+- Make devops workflows more generic, to be runable for any branchs, not just `main`
