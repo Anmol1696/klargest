@@ -6,8 +6,10 @@ PYTEST_SLOW_FLAG=slowtest
 
 DOCKER_IMAGE_NAME=anmol1696/klargest:latest
 DOCKER_CONTAINER_NAME=klargest-container
+DOCKER_COMMAND=/bin/sh
 
 .PHONY: test test-slow
+
 
 all: run
 
@@ -34,8 +36,8 @@ docker-build: docker-clear
 docker-run:
 	docker run -it --rm --name $(DOCKER_CONTAINER_NAME) $(DOCKER_IMAGE_NAME) $(DOCKER_COMMAND)
 
-docker-exec:
-	$(MAKE) docker-run DOCKER_COMMAND=/bin/sh
+docker-run-test-file:
+	$(MAKE) docker-run DOCKER_COMMAND="python -m klargest 3 --input-file=bin/input"
 
 docker-test:
 	$(MAKE) docker-run DOCKER_COMMAND="/bin/sh -c \"pytest $(PYTEST_ARGS) 'not $(PYTEST_SLOW_FLAG)'\""
@@ -43,6 +45,7 @@ docker-test:
 docker-test-slow:
 	$(MAKE) docker-run DOCKER_COMMAND="/bin/sh -c \"pytest $(PYTEST_ARGS) $(PYTEST_SLOW_FLAG)\""
 
+## Docker cleanup locally, image and container
 docker-clear-container:
 	-docker rm $(DOCKER_CONTAINER_NAME)
 

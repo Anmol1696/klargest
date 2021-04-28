@@ -88,18 +88,55 @@ Make command for running the tests are as follows
 make test
 make test-slow
 ```
-Currently there are 20 tests and 1 slow test.
+Currently there are 24 tests and 1 slow test. Following is the snipet of running all tests
+```
+============================= test session starts ==============================
+platform linux -- Python 3.9.4, pytest-5.4.3, py-1.8.2, pluggy-0.13.1 -- /usr/local/bin/python
+cachedir: .pytest_cache
+rootdir: /usr/local/app
+collecting ... collected 25 items
+
+klargest/tests/test_models.py::test_k_largest[0] PASSED                  [  4%]
+klargest/tests/test_models.py::test_k_largest[1] PASSED                  [  8%]
+klargest/tests/test_models.py::test_k_largest[2] PASSED                  [ 12%]
+klargest/tests/test_models.py::test_k_largest[3] PASSED                  [ 16%]
+klargest/tests/test_models.py::test_k_largest[4] PASSED                  [ 20%]
+klargest/tests/test_models.py::test_k_largest[5] PASSED                  [ 24%]
+klargest/tests/test_models.py::test_k_largest_from_list_of_tuples_input[0] PASSED [ 28%]
+klargest/tests/test_models.py::test_k_largest_from_list_of_tuples_input[1] PASSED [ 32%]
+klargest/tests/test_models.py::test_k_largest_from_list_of_tuples_input[2] PASSED [ 36%]
+klargest/tests/test_models.py::test_k_largest_from_list_of_tuples_input[3] PASSED [ 40%]
+klargest/tests/test_models.py::test_k_largest_from_list_of_tuples_input[4] PASSED [ 44%]
+klargest/tests/test_models.py::test_k_largest_from_list_of_tuples_input[5] PASSED [ 48%]
+klargest/tests/test_models.py::test_input_without_keys PASSED            [ 52%]
+klargest/tests/test_models.py::test_models_from_list_input PASSED        [ 56%]
+klargest/tests/test_models.py::test_model_with_invalid_k_value[0.1] PASSED [ 60%]
+klargest/tests/test_models.py::test_model_with_invalid_k_value[-1] PASSED [ 64%]
+klargest/tests/test_models.py::test_model_with_invalid_k_value[test] PASSED [ 68%]
+klargest/tests/test_models.py::test_model_with_invalid_k_value[k3] PASSED [ 72%]
+klargest/tests/test_models.py::test_k_gt_input_lenght PASSED             [ 76%]
+klargest/tests/test_models.py::test_large_input[10] PASSED               [ 80%]
+klargest/tests/test_models.py::test_large_input[100] PASSED              [ 84%]
+klargest/tests/test_models.py::test_large_input[1000] PASSED             [ 88%]
+klargest/tests/test_models.py::test_large_input[10000] PASSED            [ 92%]
+klargest/tests/test_models.py::test_large_input[100000] PASSED           [ 96%]
+klargest/tests/test_models.py::test_very_large_input_slowtest PASSED     [100%]
+
+======================= 25 passed in 12.20s ========================
+```
 
 ### Docker
-Requires Docker, tested on version `18`
+Requires Docker, tested on version `20.10.5`
 One can use docker to setup and use `klargest` module.
 ```
 # Build docker image
 make docker-build
+
 # Run pytests tests on docker
 make docker-test
+
 # Run interactive shell into docker to run comands directly
-make docker-exec
+make docker-run
 ```
 
 For cleanup can use `make docker-clean`, this will remove any images and containers by module.
