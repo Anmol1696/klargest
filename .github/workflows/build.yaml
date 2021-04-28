@@ -22,7 +22,7 @@ jobs:
     - name: Determine tag
       id: docker-tag
       run: |
-        tag=${GITHUB_RUN_NUMBER}-${GITHUB_SHA}
+        tag=${GITHUB_RUN_NUMBER}-$(echo ${GITHUB_SHA} | cut -c1-7)
         echo Tag will be $tag
         echo ::set-output name=version::$tag
     - name: Build and push
