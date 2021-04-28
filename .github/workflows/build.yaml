@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  docker:
+  docker-build:
     name: Docker image
     runs-on: ubuntu-latest
     steps:
@@ -22,7 +22,7 @@ jobs:
     - name: Determine tag
       id: docker-tag
       run: |
-        tag=$(shell date -u "+%Y%m%d")-$(echo ${GITHUB_SHA} | cut -c1-7)
+        tag=$(date -u "+%Y%m%d")-$(echo ${GITHUB_SHA} | cut -c1-7)
         echo Tag will be $tag
         echo ::set-output name=version::$tag
     - name: Build and push

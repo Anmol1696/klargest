@@ -3,13 +3,13 @@ name: Test releases
 on:
   push:
     branches:
-      - main
+    - main
   pull_request:
     branches:
-      - main
+    - main
 
 jobs:
-  docker-tester:
+  docker-test:
     name: Run Docker Pytest
     runs-on: ubuntu-latest
     steps:
