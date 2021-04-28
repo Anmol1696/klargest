@@ -1,6 +1,9 @@
 # KLargest
 A python module to provide K largest values from an input.
 
+GitHub: https://github.com/Anmol1696/klargest <br>
+DockerHub: https://hub.docker.com/repository/docker/anmol1696/klargest
+
 ## Implementation
 Using a min heap of constant size(k), storing the k largest values is implemented as model class `KLargest`.
 
