@@ -16,7 +16,7 @@ As per the current implementation, `input_iter` must be an iterable, and k must 
 
 ## Example usage
 Example usage with only numbers
-```
+```python
 k = 2
 k_largest_obj = KLargest(k)
 k_largest_obj.add(10)
@@ -29,7 +29,7 @@ print("k largest values:", k_largest_obj.values)
 ```
 
 Example 2, with extra keys
-```
+```python
 k = 2
 k_largest_obj = KLargest(k)
 k_largest_obj.add(10, "key:10")
@@ -44,7 +44,7 @@ print("k largest keys:", k_largest_obj.keys)
 ```
 
 Example 3, from iterator, you can pass an iterator to use a class method to compute k largest vaules
-```
+```python
 k = 2
 data = [10, 11, 12, 12]
 k_largest_obj = KLargest.from_input_iter(k, data, extractor=lambda x: (x,))
@@ -54,7 +54,7 @@ print("k largest values:", k_largest_obj.values)
 ```
 
 Example 4, from iterator, you can pass an iterator with a key to use a class method to compute k largest vaules
-```
+```python
 k = 2
 data = [(10, "0010"), (11, "0011"), (12, "0012"), (12, "1012")]
 k_largest_obj = KLargest.from_input_iter(k, data)
@@ -77,7 +77,7 @@ Using min heap, of size k, space complexity becomes `O(k)`
 ## Docker
 Requires Docker, tested on version `20.10.5`. Please install `make` as well, since we use make extensively
 One can use docker to setup and use `klargest` module.
-```
+```bash
 # Build docker image
 make docker-build
 
@@ -100,13 +100,13 @@ The module only uses std libraries of `python3` for implementation.
 External requirements are only for the testing framework used, `pytest`.
 
 Inorder to setup use the `make` command, as
-```
+```bash
 make install
 ```
 
 ## Tests
 Make command for running the tests are as follows
-```
+```bash
 make test
 make test-slow
 ```
@@ -150,7 +150,7 @@ klargest/tests/test_models.py::test_very_large_input_slowtest PASSED     [100%]
 # Application
 Inorder to run the app, it would be preferable to run using python directives itself rather than make commands, although we have options for both.
 Running application directly can be run from the package folder
-```
+```bash
 python3 -m klargest --help
 
 # eg. with example input file
@@ -198,7 +198,7 @@ Pushed Docker hub image via workflow: https://hub.docker.com/repository/docker/a
 Github actions: https://github.com/Anmol1696/klargest/actions/workflows/build.yaml
 
 Inorder to use docker image from dockerhub via make command
-```
+```bash
 make docker-run DOCKER_TAG=latest
 
 # Might have to delete the local latest image
