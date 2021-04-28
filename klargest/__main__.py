@@ -9,7 +9,7 @@ from .models import process_stream_to_get_keys
 from .utils import get_num_key_from_line
 
 
-def init_parser():    
+def init_parser():
     parser = argparse.ArgumentParser(description="Process stream to get K Largest uids.")
     parser.add_argument("k", metavar="K", type=int,
                         help="int for returning number of uids")

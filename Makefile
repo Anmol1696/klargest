@@ -4,11 +4,12 @@ PIP=pip3
 PYTEST_ARGS=-v -k
 PYTEST_SLOW_FLAG=slowtest
 
-DOCKER_IMAGE_NAME=anmol1696/klargest:latest
+DOCKER_IMAGE_NAME=anmol1696/klargest
+DOCKER_TAG=local
 DOCKER_CONTAINER_NAME=klargest-container
 DOCKER_COMMAND=/bin/sh
 
-.PHONY: test test-slow
+.PHONY: test test-slow docker-clear-container docker-clear-image docker-clear
 
 
 all: run
@@ -31,10 +32,10 @@ help:
 
 # Commands for docker setup and run
 docker-build: docker-clear
-	docker build . -t $(DOCKER_IMAGE_NAME)
+	docker build . -t $(DOCKER_IMAGE_NAME):$(DOCKER_TAG)
 
 docker-run:
-	docker run -it --rm --name $(DOCKER_CONTAINER_NAME) $(DOCKER_IMAGE_NAME) $(DOCKER_COMMAND)
+	docker run -it --rm --name $(DOCKER_CONTAINER_NAME) $(DOCKER_IMAGE_NAME):$(DOCKER_TAG) $(DOCKER_COMMAND)
 
 docker-run-test-file:
 	$(MAKE) docker-run DOCKER_COMMAND="python -m klargest 3 --input-file=bin/input"
@@ -52,4 +53,4 @@ docker-clear-container:
 docker-clear-image:
 	-docker rmi $(DOCKER_IMAGE_NAME)
 
-docker-clear: docker-clear-container docker-clear-image 
+docker-clear: docker-clear-container docker-clear-image
