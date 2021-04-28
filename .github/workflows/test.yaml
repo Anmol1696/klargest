@@ -10,7 +10,7 @@ on:
 
 jobs:
   python-tester:
-    name: Docker Test image
+    name: Run Pytest
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
