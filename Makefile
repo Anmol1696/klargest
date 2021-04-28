@@ -4,7 +4,7 @@ PIP=pip3
 PYTEST_ARGS=-v -k
 PYTEST_SLOW_FLAG=slowtest
 
-DOCKER_IMAGE_NAME=klargest:latest
+DOCKER_IMAGE_NAME=anmol1696/klargest:latest
 DOCKER_CONTAINER_NAME=klargest-container
 
 .PHONY: test test-slow
