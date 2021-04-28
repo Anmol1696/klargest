@@ -1,7 +1,10 @@
 # KLargest
 A python module to provide K largest values from an input.
 
-## Implementation
+GitHub: https://github.com/Anmol1696/klargest <br>
+DockerHub: https://hub.docker.com/repository/docker/anmol1696/klargest
+
+# Implementation
 Using a min heap of constant size(k), storing the k largest values is implemented as model class `KLargest`.
 
 In order to add values to object function, `add(self, num, *args)` where the `num` is the value and args could be any values related to the key. The k largest values are selected based on `num`.
@@ -11,9 +14,11 @@ The class stores k largest values in object variable `heap`, which can be extrac
 For forming a class object from an input iterator(stream, list, iterable), use the a classmethod `from_input_iter(cls, k, input_iter, extractor=lambda x: x, **kwargs)`.
 As per the current implementation, `input_iter` must be an iterable, and k must be a positive integer. `extractor` is function used for ectraction of values from the iterable and passing to `add` func. The signature of extraction should be of tuple form. So depending on the input iterable, extractor is defined.
 
-### Example usage
+## Example usage
 Example usage with only numbers
-```
+```python
+from klargest.models import KLargest
+
 k = 2
 k_largest_obj = KLargest(k)
 k_largest_obj.add(10)
@@ -26,7 +31,9 @@ print("k largest values:", k_largest_obj.values)
 ```
 
 Example 2, with extra keys
-```
+```python
+from klargest.models import KLargest
+
 k = 2
 k_largest_obj = KLargest(k)
 k_largest_obj.add(10, "key:10")
@@ -41,7 +48,9 @@ print("k largest keys:", k_largest_obj.keys)
 ```
 
 Example 3, from iterator, you can pass an iterator to use a class method to compute k largest vaules
-```
+```python
+from klargest.models import KLargest
+
 k = 2
 data = [10, 11, 12, 12]
 k_largest_obj = KLargest.from_input_iter(k, data, extractor=lambda x: (x,))
@@ -51,7 +60,9 @@ print("k largest values:", k_largest_obj.values)
 ```
 
 Example 4, from iterator, you can pass an iterator with a key to use a class method to compute k largest vaules
-```
+```python
+from klargest.models import KLargest
+
 k = 2
 data = [(10, "0010"), (11, "0011"), (12, "0012"), (12, "1012")]
 k_largest_obj = KLargest.from_input_iter(k, data)
@@ -60,31 +71,50 @@ k_largest_obj = KLargest.from_input_iter(k, data)
 print("k largest values:", k_largest_obj.values)
 ```
 
-## Time and Space complexity
-### Time Complexity
+# Time and Space complexity
+## Time Complexity
 - Build min heap of first k elements from input, `O(k)`
 - For each element after k, compare to root, switch if smaller, hepify, `O((n-k)*log(k))`
 
 Total time complexity, `O(k + (n-k)*logk)`. For large values on n, simplifies to `O(nlogk)`
 
-### Space complexity
+## Space complexity
 Using min heap, of size k, space complexity becomes `O(k)`
 
-## Run
-### Setup
+# Run
+## Docker
+Requires Docker, tested on version `20.10.5`. Please install `make` as well, since we use make extensively
+One can use docker to setup and use `klargest` module.
+```bash
+# Build docker image
+make docker-build
+
+# Run pytests tests on docker
+make docker-test
+
+# Run interactive shell into docker to run comands directly
+make docker-run
+
+## Or run directly `python -m klargest 3 --input-file bin/input` inside docker
+make docker-run-test-file
+```
+
+For cleanup can use `make docker-clean`, this will remove any images and containers by module.
+
+## Local Setup
 Requirements are, `pip3, pip3.7` and `python3, python3.7` to be pre-installed. `make` is used thoughout, extact commands can be looked up and executed instead from `Makefile`.
 
 The module only uses std libraries of `python3` for implementation.
 External requirements are only for the testing framework used, `pytest`.
 
 Inorder to setup use the `make` command, as
-```
+```bash
 make install
 ```
 
-### Tests
+## Tests
 Make command for running the tests are as follows
-```
+```bash
 make test
 make test-slow
 ```
@@ -125,26 +155,10 @@ klargest/tests/test_models.py::test_very_large_input_slowtest PASSED     [100%]
 ======================= 25 passed in 12.20s ========================
 ```
 
-### Docker
-Requires Docker, tested on version `20.10.5`
-One can use docker to setup and use `klargest` module.
-```
-# Build docker image
-make docker-build
-
-# Run pytests tests on docker
-make docker-test
-
-# Run interactive shell into docker to run comands directly
-make docker-run
-```
-
-For cleanup can use `make docker-clean`, this will remove any images and containers by module.
-
-### App
+# Application
 Inorder to run the app, it would be preferable to run using python directives itself rather than make commands, although we have options for both.
 Running application directly can be run from the package folder
-```
+```bash
 python3 -m klargest --help
 
 # eg. with example input file
@@ -172,8 +186,44 @@ optional arguments:
                         optional file output to write (default: stdout)
 ```
 
-## Future Improvements
+# DevOps
+Using the github actions for CI/CD workflows directly build docker images and push to dockerhub, and run pytest.
+
+## Dockerfile
+Using the base image of python alpine. Creating a working dir at `/usr/local/app` and copy code to it.
+
+A `appuser` which is a non root user for running the application, which is the default docker user.
+`make` command is avaibale as well in the docker container itself.
+
+## Build and Push Docker image
+When any commit is made to the `main` branch, directly or via a merged pull request, triggers this workflow.
+The docker image is build, tagged and pushed to docker hub.
+
+Docker tag for the images are of the form, `anmol1696/klargest:{date}-{git-short-commit}`. The latest image is also tagged with
+tag of `latest`.
+
+Pushed Docker hub image via workflow: https://hub.docker.com/repository/docker/anmol1696/klargest/tags?page=1&ordering=last_updated <br>
+Github actions: https://github.com/Anmol1696/klargest/actions/workflows/build.yaml
+
+Inorder to use docker image from dockerhub via make command
+```bash
+make docker-run DOCKER_TAG=latest
+
+# Might have to delete the local latest image
+make docker-clear DOCKER_TAG=latest
+```
+
+## Run Tests on Docker
+When a pull request is created for `main`, or commit pushed to `main` branch, trggers this test workflow.
+This creates a test docker image and runs pytests.
+
+Have a look at the github actions at https://github.com/Anmol1696/klargest/actions/workflows/test.yaml <br>
+Sample test triggered via a pull request: https://github.com/Anmol1696/klargest/pull/1/checks
+
+# Future Improvements
 - Have more tests
 - Validations on `add` function needs to be improved
 - Better initialization to avaoid extra checks on `add` function
 - Raise custom exceptions instead of generic `Exception` where ever used
+- Make devops workflows more generic, to be runable for any branchs, not just `main`
+- Break large documentation into smaller parts
