@@ -34,6 +34,9 @@ optional arguments:
   --output-file OUTPUT_FILE
                         optional file output to write (default: stdout)
 ```
+#### NOTE
+While using `stdin` for input, all lines should be for form `{id} {int}`.
+After all inputs need to press `Ctl-d` to end input
 
 # Implementation
 Using a min heap of constant size(k), storing the k largest values is implemented as model class `KLargest`.
