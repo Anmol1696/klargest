@@ -28,7 +28,8 @@ if __name__ == "__main__":
     # Read stream to prepare k_largest
     with fileinput.input(args.input_file) as fd:
         k_largest_keys = process_stream_to_get_keys(
-            args.k, fd, extractor=get_num_key_from_line)
+            args.k, fd, extractor=get_num_key_from_line,
+        )
 
     # Write to file or stdout
     if args.output_file:

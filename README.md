@@ -15,9 +15,13 @@ For forming a class object from an input iterator(stream, list, iterable), use t
 As per the current implementation, `input_iter` must be an iterable, and k must be a positive integer. `extractor` is function used for ectraction of values from the iterable and passing to `add` func. The signature of extraction should be of tuple form. So depending on the input iterable, extractor is defined.
 
 ## Example usage
+Inorder to run following examples, either install using one of the following
+- `python setup.py install` to have pacakage available loaclly
+- use interactive python directly in docker, open shell with `make docker-run DOCKER_COMMAND=python`
+
 Example usage with only numbers
 ```python
-from klargest.models import KLargest
+from klargest import KLargest
 
 k = 2
 k_largest_obj = KLargest(k)
@@ -27,12 +31,13 @@ k_largest_obj.add(12)
 k_largest_obj.add(12)
 
 ## Extract largest value
-print("k largest values:", k_largest_obj.values)
+print("k largest values:", list(k_largest_obj.values))
+## >>> k largest values: [12, 12]
 ```
 
 Example 2, with extra keys
 ```python
-from klargest.models import KLargest
+from klargest import KLargest
 
 k = 2
 k_largest_obj = KLargest(k)
@@ -42,33 +47,38 @@ k_largest_obj.add(12, "key:12")
 k_largest_obj.add(12, "key:12+1")
 
 ## Extract largest value
-print("k largest values:", k_largest_obj.values)
+print("k largest values:", list(k_largest_obj.values))
+## >>> k largest values: [12, 12]
+
 ## Keys assosiated k largest values
-print("k largest keys:", k_largest_obj.keys)
+print("k largest keys:", list(k_largest_obj.keys))
+## >>> k largest keys: ['key:12', 'key:12+1']
 ```
 
 Example 3, from iterator, you can pass an iterator to use a class method to compute k largest vaules
 ```python
-from klargest.models import KLargest
+from klargest import KLargest
 
 k = 2
 data = [10, 11, 12, 12]
 k_largest_obj = KLargest.from_input_iter(k, data, extractor=lambda x: (x,))
 
 ## Extract largest value
-print("k largest values:", k_largest_obj.values)
+print("k largest values:", list(k_largest_obj.values))
+## >>> k largest values: [12, 12]
 ```
 
 Example 4, from iterator, you can pass an iterator with a key to use a class method to compute k largest vaules
 ```python
-from klargest.models import KLargest
+from klargest import KLargest
 
 k = 2
 data = [(10, "0010"), (11, "0011"), (12, "0012"), (12, "1012")]
 k_largest_obj = KLargest.from_input_iter(k, data)
 
 ## Extract largest value
-print("k largest values:", k_largest_obj.values)
+print("k largest values:", list(k_largest_obj.values))
+## >>> k largest values: [12, 12]
 ```
 
 # Time and Space complexity

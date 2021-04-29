@@ -7,8 +7,15 @@ import heapq
 class KLargest:
     """
     Implements a class to hold min heap of constant length
-    for k largest values
+    for k largest values and additional information as keys
+
+    Values, stored in `self.values` are the k largest values,
+    which are stored and indexed as min heap
+    Keys, stored in `self.keys` are any arbitary objects associated
+    with the indexed values.
     """
+    value_index = 0
+    key_index = 1
 
     def __init__(self, k=0):
         self.heap = []  # Min heap of k largest values
@@ -28,15 +35,15 @@ class KLargest:
         """
         Return k largest values, not in any order
         """
-        return (x[0] for x in self.heap)
+        return (x[self.value_index] for x in self.heap)
 
     @property
     def keys(self):
         """
-        Return key related to k largest values, if specified with values
+        Return keys related to k largest values, if specified with values
         NOTE: For now, only returns single key at index 1
         """
-        return (x[1] for x in self.heap if len(x) > 1)
+        return (x[self.key_index] for x in self.heap if len(x) > 1)
 
     def add(self, num, *args):
         """
