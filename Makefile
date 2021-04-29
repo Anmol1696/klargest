@@ -52,6 +52,6 @@ docker-clear-container:
 	-docker rm $(DOCKER_CONTAINER_NAME)
 
 docker-clear-image:
-	-docker rmi $(DOCKER_IMAGE_NAME)
+	-docker rmi $(DOCKER_IMAGE_NAME):$(DOCKER_TAG)
 
 docker-clear: docker-clear-container docker-clear-image
