@@ -4,6 +4,37 @@ A python module to provide K largest values from an input.
 GitHub: https://github.com/Anmol1696/klargest <br>
 DockerHub: https://hub.docker.com/repository/docker/anmol1696/klargest
 
+# Application
+Inorder to run the app, it would be preferable to run using python directives itself rather than make commands, although we have options for both.
+Running application directly can be run from the package folder
+```bash
+python3 -m klargest --help
+
+# eg. with example input file
+python3 -m klargest 3 --input-file bin/input
+```
+Output from help shows how to run the app, and all arguments related.
+- K (for k largest values) is a required variable
+- Input file is optional, if not specified, stdin is used to read
+- If output file is specified, then output is only writen to file not std out
+```
+python3 -m klargest --help
+usage: __main__.py [-h] [--input-file INPUT_FILE] [--output-file OUTPUT_FILE]
+                   K
+
+Process stream to get K Largest uids.
+
+positional arguments:
+  K                     int for returning number of uids
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --input-file INPUT_FILE
+                        optional file name to read stream (default: stdin)
+  --output-file OUTPUT_FILE
+                        optional file output to write (default: stdout)
+```
+
 # Implementation
 Using a min heap of constant size(k), storing the k largest values is implemented as model class `KLargest`.
 
@@ -92,7 +123,7 @@ Total time complexity, `O(k + (n-k)*logk)`. For large values on n, simplifies to
 Using min heap, of size k, space complexity becomes `O(k)`
 
 # Run
-## Docker
+## Docker (Recommended)
 Requires Docker, tested on version `20.10.5`. Please install `make` as well, since we use make extensively
 One can use docker to setup and use `klargest` module.
 ```bash
@@ -104,6 +135,9 @@ make docker-test
 
 # Run interactive shell into docker to run comands directly
 make docker-run
+
+# Run python IDE in docker
+make docker-run DOCKER_COMMAND=python
 
 ## Or run directly `python -m klargest 3 --input-file bin/input` inside docker
 make docker-run-test-file
@@ -163,37 +197,6 @@ klargest/tests/test_models.py::test_large_input[100000] PASSED           [ 96%]
 klargest/tests/test_models.py::test_very_large_input_slowtest PASSED     [100%]
 
 ======================= 25 passed in 12.20s ========================
-```
-
-# Application
-Inorder to run the app, it would be preferable to run using python directives itself rather than make commands, although we have options for both.
-Running application directly can be run from the package folder
-```bash
-python3 -m klargest --help
-
-# eg. with example input file
-python3 -m klargest 3 --input-file bin/input
-```
-Output from help shows how to run the app, and all arguments related.
-- K (for k largest values) is a required variable
-- Input file is optional, if not specified, stdin is used to read
-- If output file is specified, then output is only writen to file not std out
-```
-python3 -m klargest --help
-usage: __main__.py [-h] [--input-file INPUT_FILE] [--output-file OUTPUT_FILE]
-                   K
-
-Process stream to get K Largest uids.
-
-positional arguments:
-  K                     int for returning number of uids
-
-optional arguments:
-  -h, --help            show this help message and exit
-  --input-file INPUT_FILE
-                        optional file name to read stream (default: stdin)
-  --output-file OUTPUT_FILE
-                        optional file output to write (default: stdout)
 ```
 
 # DevOps
