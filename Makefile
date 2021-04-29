@@ -16,6 +16,7 @@ all: run
 
 install:
 	$(PIP) install -r requirements.txt
+	$(PIP) install -e .
 
 test:
 	pytest $(PYTEST_ARGS) "not $(PYTEST_SLOW_FLAG)"

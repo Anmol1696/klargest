@@ -32,5 +32,8 @@ RUN chmod 755 /usr/local/app
 # Copy code to the container
 COPY . /usr/local/app
 
+# Install klargest package locally
+RUN python setup.py install
+
 # Set app user as non root user
 USER 10001
